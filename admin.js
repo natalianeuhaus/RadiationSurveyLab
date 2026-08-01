@@ -1,7 +1,7 @@
 "use strict";
 
 // Paste the /exec URL from the deployed Google Apps Script web app here.
-const ADMIN_API_URL = "";
+const ADMIN_API_URL = "https://script.google.com/macros/s/AKfycbxI4Ipy5_29hvX05kEhbPb4d8GEc-G3BP7V0POXdjL5Z37Oq6TcSNKqw_OvHwSWfQjjqw/exec";
 const LOCAL_PREVIEW = !ADMIN_API_URL;
 
 const state = { token: sessionStorage.getItem("rslAdminToken") || "", user: null, submissions: [], editingId: "" };
