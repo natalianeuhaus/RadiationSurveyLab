@@ -9,7 +9,7 @@ A separate research tool derived from the visual and mapping foundation of *Gree
 - Latitude/longitude search
 - Draw a survey polygon
 - Generate a lawnmower flight path
-- Altitude, speed, spacing, and route-angle controls
+- Altitude, speed, spacing, and route-angle controls 
 - Distance, time, pass, and waypoint estimates
 - GeoJSON, KML, CSV, and experimental DJI KMZ export
 - Import and label multiple walking, vehicle, drone, stationary, or community Radiacode surveys
