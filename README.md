@@ -4,7 +4,7 @@ A separate research tool derived from the visual and mapping foundation of *Gree
 
 ## Included
 
-- Deep dark-red interface 
+- Deep dark-red interface  
 - Address search
 - Latitude/longitude search
 - Draw a survey polygon
