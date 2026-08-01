@@ -91,14 +91,30 @@ async function restoreSession() {
 }
 
 function showDashboard() {
-  els.loginPanel.hidden = true; els.dashboard.hidden = false;
-  els.roleChip.textContent = state.user.role; els.signedInAs.textContent = state.user.email;
+  els.loginPanel.hidden = true;
+  els.loginPanel.style.display = "none";
+
+  els.dashboard.hidden = false;
+  els.dashboard.style.display = "block";
+
+  els.roleChip.textContent = state.user.role;
+  els.signedInAs.textContent = state.user.email;
   els.loginCode.value = "";
 }
 
 function logout() {
-  state.token = ""; state.user = null; sessionStorage.removeItem("rslAdminToken");
-  els.dashboard.hidden = true; els.loginPanel.hidden = false; els.loginStatus.textContent = "Signed out.";
+  state.token = "";
+  state.user = null;
+
+  sessionStorage.removeItem("rslAdminToken");
+
+  els.dashboard.hidden = true;
+  els.dashboard.style.display = "none";
+
+  els.loginPanel.hidden = false;
+  els.loginPanel.style.display = "block";
+
+  els.loginStatus.textContent = "Signed out.";
 }
 
 function readFile(file) {
