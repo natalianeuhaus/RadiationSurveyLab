@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Survey Admin | Radiation Survey Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <p class="eyebrow">GREETINGS FROM NIAGARA · TRUSTED SURVEY UPLOADS</p>
+        <h1>Survey Admin</h1>
+        <p>Upload and review drone, walking, vehicle, and stationary Radiacode surveys.</p>
+      </div>
+      <a class="admin-link-button" href="index.html">Back to planner</a>
+    </header>
+
+    <section id="setupNotice" class="admin-notice">
+      <strong>Backend not configured yet.</strong>
+      Add your deployed Google Apps Script URL to <code>admin.js</code>. Until then, this page works in local preview mode only.
+    </section>
+
+    <section id="loginPanel" class="admin-card login-card">
+      <h2>Sign in</h2>
+      <p class="help">Access is limited to the owner and two approved survey uploaders.</p>
+      <label>Email
+        <input id="loginEmail" type="email" autocomplete="username" placeholder="name@example.com">
+      </label>
+      <label>Access code
+        <input id="loginCode" type="password" autocomplete="current-password" placeholder="Access code">
+      </label>
+      <button id="loginBtn" class="primary full" type="button">Sign in</button>
+      <p id="loginStatus" class="help" aria-live="polite"></p>
+    </section>
+
+    <section id="dashboard" class="admin-dashboard" hidden>
+      <div class="admin-toolbar">
+        <div>
+          <span class="role-chip" id="roleChip">Owner</span>
+          <strong id="signedInAs"></strong>
+        </div>
+        <button id="logoutBtn" type="button">Sign out</button>
+      </div>
+
+      <div class="admin-grid">
+        <section class="admin-card upload-card">
+          <h2 id="uploadFormTitle">Upload survey</h2>
+          <label>Survey name
+            <input id="surveyName" type="text" placeholder="Cayuga Island walking survey" maxlength="120">
+          </label>
+          <div class="two-col">
+            <label>Survey type
+              <select id="surveyType">
+                <option value="walking">Walking</option>
+                <option value="drone">Drone</option>
+                <option value="vehicle">Vehicle</option>
+                <option value="stationary">Stationary</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label>Survey date
+              <input id="surveyDate" type="date">
+            </label>
+          </div>
+          <div class="two-col">
+            <label>Observer / organization
+              <input id="observer" type="text" placeholder="Name or group">
+            </label>
+            <label>Detector model
+              <input id="detectorModel" type="text" placeholder="Radiacode RC110">
+            </label>
+          </div>
+          <div class="two-col">
+            <label>Detector ID
+              <input id="detectorId" type="text" placeholder="Optional serial or nickname">
+            </label>
+            <label>Detector height
+              <input id="detectorHeight" type="text" placeholder="e.g. 3 ft or 20 ft AGL">
+            </label>
+          </div>
+          <label>Location / area
+            <input id="locationName" type="text" placeholder="Street, park, creek corridor, etc.">
+          </label>
+          <label>Notes, conditions, and source
+            <textarea id="surveyNotes" rows="4" placeholder="Walking speed, weather, mounting position, attribution, or other context"></textarea>
+          </label>
+          <label>Survey data file
+            <input id="surveyFile" type="file" accept=".csv,.txt,.geojson,.json,.gpx,.kml,.kmz">
+          </label>
+          <label>Optional supporting file
+            <input id="supportFile" type="file" accept=".csv,.txt,.geojson,.json,.gpx,.kml,.kmz,.pdf,.jpg,.jpeg,.png">
+          </label>
+          <button id="uploadBtn" class="primary full" type="button">Save survey</button>
+          <button id="cancelEditBtn" class="full" type="button" hidden>Cancel editing</button>
+          <p id="uploadStatus" class="help" aria-live="polite"></p>
+        </section>
+
+        <section class="admin-card submissions-card">
+          <div class="section-heading-row">
+            <div>
+              <h2>Survey submissions</h2>
+              <p class="help">Uploaders see and edit only their own unpublished surveys. Only the owner can manage all records or change publication status.</p>
+            </div>
+            <button id="refreshBtn" type="button">Refresh</button>
+          </div>
+          <div class="filter-row">
+            <label>Status
+              <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="draft">Draft</option>
+                <option value="submitted">Submitted</option>
+                <option value="published">Published</option>
+                <option value="hidden">Hidden</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </label>
+          </div>
+          <div id="submissionsList" class="submissions-list" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
