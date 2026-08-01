@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Radiation Survey Lab v2 | Greetings from Niagara</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="public.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="planner-panel" aria-label="Radiation Survey Lab controls">
+      <header class="brand">
+        <p class="eyebrow">GREETINGS FROM NIAGARA · OPEN RESEARCH TOOL</p>
+        <h1>Radiation Survey Lab</h1>
+        <p>Plan drone missions, preview GPS-linked radiation data, submit community research, and explore approved survey projects.</p>
+        <nav class="section-nav" aria-label="Lab sections">
+          <a href="#published">Published</a>
+          <a href="#flight-planner">Flight planner</a>
+          <a href="#submit-project">Import & submit</a>
+        </nav>
+      </header>
+
+      <section class="control-section search-section">
+        <h2>Find a survey location</h2>
+        <label for="locationSearch">Address or coordinates</label>
+        <div class="search-row">
+          <input id="locationSearch" type="search" placeholder="123 Main St, Niagara Falls, NY or 43.09, -79.06" autocomplete="off">
+          <button id="locationSearchBtn" class="primary" type="button">Search</button>
+        </div>
+        <p id="searchStatus" class="help" aria-live="polite">Coordinates may be entered as latitude, longitude.</p>
+      </section>
+
+      <section id="published" class="control-section published-section">
+        <div class="section-heading-row">
+          <div>
+            <h2>Published survey projects</h2>
+            <p class="help">Only projects reviewed and approved by Radiation Survey Lab appear here.</p>
+          </div>
+          <button id="refreshBtn" type="button">Refresh</button>
+        </div>
+        <p id="libraryStatus" class="help" aria-live="polite">Loading published projects…</p>
+        <div id="surveyList" class="public-survey-list"></div>
+      </section>
+
+      <section id="flight-planner" class="control-section planner-intro">
+        <h2>Drone survey flight planner</h2>
+        <p class="help">Draw a survey area, generate a slow lawnmower route, and export the planned mission. This plans the route only; actual radiation coordinates must come from the flight log and detector data.</p>
+      </section>
+
+      <section class="control-section">
+        <h2>1. Survey area</h2>
+        <p class="help">Use the polygon tool on the map. Only one survey polygon is used at a time.</p>
+        <div class="button-row">
+          <button id="drawAreaBtn" class="primary" type="button">Draw survey area</button>
+          <button id="clearBtn" type="button">Clear</button>
+        </div>
+      </section>
+
+      <section class="control-section form-grid">
+        <h2>2. Flight settings</h2>
+        <label>
+          Mission name
+          <input id="missionName" type="text" value="Niagara_Test_01" maxlength="80">
+        </label>
+        <div class="two-col">
+          <label>
+            Altitude (ft)
+            <input id="altitude" type="number" min="6" max="400" step="1" value="20">
+          </label>
+          <label>
+            Speed (mph)
+            <input id="speed" type="number" min="0.5" max="25" step="0.1" value="2">
+          </label>
+        </div>
+        <div class="two-col">
+          <label>
+            Line spacing (ft)
+            <input id="spacing" type="number" min="3" max="500" step="1" value="10">
+          </label>
+          <label>
+            Route angle (°)
+            <input id="angle" type="number" min="0" max="179" step="1" value="0">
+          </label>
+        </div>
+        <label class="checkbox-row">
+          <input id="showWaypoints" type="checkbox" checked>
+          Show numbered waypoints
+        </label>
+        <button id="generateBtn" class="primary full" type="button">Generate flight path</button>
+      </section>
+
+      <section class="control-section">
+        <h2>3. Mission estimate</h2>
+        <div class="stats" aria-live="polite">
+          <div><span>Route</span><strong id="distanceStat">—</strong></div>
+          <div><span>Flight time</span><strong id="timeStat">—</strong></div>
+          <div><span>Passes</span><strong id="passesStat">—</strong></div>
+          <div><span>Waypoints</span><strong id="waypointsStat">—</strong></div>
+        </div>
+        <p id="batteryNote" class="status">Draw an area to begin.</p>
+      </section>
+
+      <section class="control-section">
+        <h2>4. Export planned route</h2>
+        <div class="export-grid">
+          <button data-export="geojson" type="button" disabled>GeoJSON</button>
+          <button data-export="kml" type="button" disabled>KML</button>
+          <button data-export="csv" type="button" disabled>CSV</button>
+          <button data-export="kmz" type="button" disabled>DJI KMZ</button>
+        </div>
+        <p class="fine-print"><strong>DJI KMZ is experimental.</strong> Test first over an empty controlled area. DJI Fly on RC 2 does not provide a normal public import button, so transfer may require a compatible installer or mission-replacement workflow.</p>
+      </section>
+
+      <section id="submit-project" class="control-section community-section submission-section">
+        <h2>Import, preview, and submit a survey project</h2>
+        <p class="help">Radiacode is welcome but not required. Upload GPS-linked data from any Geiger counter, scintillation detector, spectrometer, drone, vehicle, walking survey, or community research project.</p>
+
+        <label>
+          Project name <span class="required">required</span>
+          <input id="communitySurveyName" type="text" placeholder="Cayuga Island community radiation survey" maxlength="120">
+        </label>
+
+        <div class="two-col">
+          <label>
+            Collection method <span class="required">required</span>
+            <select id="communitySurveyType">
+              <option value="walking">Walking GPS survey</option>
+              <option value="vehicle">Vehicle GPS survey</option>
+              <option value="drone">Drone-mounted survey</option>
+              <option value="stationary">Stationary point readings</option>
+              <option value="manual">Hand-entered/community log</option>
+              <option value="other">Other method</option>
+            </select>
+          </label>
+          <label>
+            Survey date
+            <input id="communityDate" type="date">
+          </label>
+        </div>
+
+        <div class="two-col">
+          <label>
+            Observer / organization
+            <input id="communityObserver" type="text" placeholder="Name, group, or anonymous" maxlength="120">
+          </label>
+          <label>
+            Detector / instrument
+            <input id="communityDetector" type="text" placeholder="Radiacode RC110, GMC-600+, Ludlum, etc." maxlength="120">
+          </label>
+        </div>
+
+        <div class="two-col">
+          <label>
+            Contact email <span class="required">required · private</span>
+            <input id="submitterEmail" type="email" placeholder="name@example.com" autocomplete="email">
+          </label>
+          <label>
+            Contact phone <span class="optional">optional · private</span>
+            <input id="submitterPhone" type="tel" placeholder="Optional">
+          </label>
+        </div>
+
+        <div class="two-col">
+          <label>
+            Detector height / mounting
+            <input id="detectorHeight" type="text" placeholder="3 ft above ground, backpack, 20 ft AGL">
+          </label>
+          <label>
+            Location / survey area
+            <input id="locationName" type="text" placeholder="Street, park, creek corridor, city">
+          </label>
+        </div>
+
+        <label>
+          Data source or export format
+          <input id="dataSource" type="text" placeholder="Radiacode app CSV, custom logger, GPX joined to readings, etc.">
+        </label>
+
+        <label>
+          Method, conditions, notes, and source
+          <textarea id="communityNotes" rows="5" placeholder="Describe walking speed, dwell time, weather, calibration, background, mounting position, data processing, or anything needed to interpret the measurements."></textarea>
+        </label>
+
+        <label>
+          GPS-linked survey data <span class="required">required</span>
+          <input id="communityFile" type="file" accept=".csv,.txt,.geojson,.json,.gpx">
+        </label>
+        <p class="file-note">Preview supports CSV/TXT with latitude and longitude columns, GeoJSON/JSON, and GPX. The public map will display only approved projects.</p>
+
+        <label>
+          Optional supporting file
+          <input id="supportFile" type="file" accept=".csv,.txt,.geojson,.json,.gpx,.kml,.kmz,.pdf,.jpg,.jpeg,.png">
+        </label>
+
+        <label class="checkbox-row consent-row">
+          <input id="publishConsent" type="checkbox">
+          I confirm I have permission to submit this project and allow Radiation Survey Lab to review and publish the project metadata and approved survey data.
+        </label>
+
+        <label class="bot-field" aria-hidden="true">
+          Leave this field empty
+          <input id="websiteField" type="text" tabindex="-1" autocomplete="off">
+        </label>
+
+        <div class="submission-actions-public">
+          <button id="importCommunityBtn" type="button">Preview on map</button>
+          <button id="submitSurveyBtn" class="primary" type="button">Submit project for review</button>
+        </div>
+        <p id="communityStatus" class="help" aria-live="polite">Your project remains private until it is reviewed and approved.</p>
+        <div id="communitySurveyList" class="survey-list" aria-live="polite"></div>
+      </section>
+
+      <section class="control-section methodology">
+        <h2>How to interpret survey data</h2>
+        <p>These are screening and research measurements, not regulatory determinations. Results depend on detector model, detector height, speed, dwell time, calibration, weather, geometry, and local background. Projects collected under different methods should not be treated as directly interchangeable.</p>
+      </section>
+
+      <footer class="lab-footer">
+        <a href="admin.html">Private review</a>
+      </footer>
+    </aside>
+
+    <section class="map-wrap" aria-label="Radiation survey map">
+      <div id="map"></div>
+      <button id="legendBtn" class="map-control-button" type="button" aria-expanded="false">Survey Results Key</button>
+      <aside id="legendPanel" class="legend-panel" hidden>
+        <div class="legend-heading">
+          <h2>Survey Results Key</h2>
+          <button id="legendClose" type="button" aria-label="Close key">×</button>
+        </div>
+        <h3>Survey methods</h3>
+        <div class="legend-row"><span class="symbol line-symbol"></span><span>Walking or vehicle survey track</span></div>
+        <div class="legend-row"><span class="symbol drone-symbol"></span><span>Drone survey track</span></div>
+        <div class="legend-row"><span class="symbol point-symbol"></span><span>Stationary reading or sample point</span></div>
+        <h3>Measurement display</h3>
+        <div class="gradient-bar" aria-label="Relative measurement scale"></div>
+        <div class="gradient-labels"><span>Lower within project</span><span>Higher within project</span></div>
+        <p>Colors are scaled within each project unless explicit thresholds are supplied. Click a point or track for its value and methodology.</p>
+        <h3>Units</h3>
+        <p><strong>CPM/CPS:</strong> detector count rate. <strong>µSv/h:</strong> estimated dose rate. A higher reading alone does not identify a source or isotope.</p>
+      </aside>
+      <div class="map-note">Open research map · submitted projects remain private until approved</div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="planner.js"></script>
+  <script src="public.js"></script>
+</body>
+</html>
