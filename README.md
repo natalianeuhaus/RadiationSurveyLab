@@ -7,7 +7,7 @@ Radiation Survey Lab v2 is now one public research interface plus one private re
 `index.html` includes:
 
 - published, approved radiation survey projects; 
-- address and coordinate search; 
+- address and coordinate search;  
 - survey-area drawing;
 - lawnmower-route generation;
 - GeoJSON, KML, CSV, and experimental DJI KMZ mission export;
