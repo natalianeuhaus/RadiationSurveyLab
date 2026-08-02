@@ -71,3 +71,8 @@ input[type="file"]{font-size:.74rem}
     background: #646262 !important;
     border-color: #232121 !important;
 }
+
+.button.primary {
+    background: #646262 !important;
+    border-color: #232121 !important;
+}
