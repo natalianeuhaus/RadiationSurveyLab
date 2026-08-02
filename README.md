@@ -1,6 +1,6 @@
 # Radiation Survey Lab v2
 
-Radiation Survey Lab v2 is now one public research interface plus one private review page. 
+Radiation Survey Lab v2 is now one public research interface plus one private review page.  
 
 ## Public interface
 
