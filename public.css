@@ -4,3 +4,15 @@
 .planner-panel {
     background: #fefefe!important;
 }
+
+.map-control-button {background: #333132 !important;border-color: #0f0f0f !important;}
+
+.button.primary {
+    background: #646262 !important;
+    border-color: #232121 !important;
+}
+
+.section-nav a {
+    border: 1px solid #3c3c3c !important;
+    color: #433f40 !important;
+}
