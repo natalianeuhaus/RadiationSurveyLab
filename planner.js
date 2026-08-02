@@ -20,7 +20,7 @@ const topo = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
   maxZoom: 17,
   attribution: "OpenTopoMap"
 });
-const layerControl = L.control.layers({ Streets: street, Satellite: satellite, Topographic: topo }, {}, { position: "topright" }).addTo(map);
+const layerControl = L.control.layers({ Streets: street, Satellite: satellite, Topographic: topo }, {}, { position: "bottomright" }).addTo(map);
 
 const drawnItems = new L.FeatureGroup().addTo(map);
 const routeLayer = new L.FeatureGroup().addTo(map);
