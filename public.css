@@ -2,7 +2,7 @@
 @media(max-width:420px){.submission-actions-public{grid-template-columns:1fr}.section-heading-row{align-items:flex-start}.map-control-button{top:58px}}
 
 .planner-panel {
-    background: #fefefe!important;
+    background:#f7f9fb!important;
 }
 
 .map-control-button {background: #333132 !important;border-color: #0f0f0f !important;}
