@@ -68,10 +68,3 @@ input[type="file"]{font-size:.74rem}
 .admin-entry-link{display:inline-block;margin-top:12px;padding:8px 11px;border:1px solid #4d0f14;background:#6f161c;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;font-size:.72rem}.admin-entry-link:hover{background:#4d0f14}
 .secondary-link{margin-left:.35rem;background:transparent!important;color:#4d0f14!important}.secondary-link:hover{background:#4d0f14!important;color:#fff!important}
 
-.community-section select,
-.community-section input[type="date"] {
-  box-sizing: border-box;
-  height: 3rem;
-  padding: 0 .65rem;
-  font: inherit;
-}
