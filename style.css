@@ -67,4 +67,7 @@ input[type="file"]{font-size:.74rem}
 .community-point{background:var(--red-dark);border:1px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.38)}
 .admin-entry-link{display:inline-block;margin-top:12px;padding:8px 11px;border:1px solid #4d0f14;background:#6f161c;color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;font-size:.72rem}.admin-entry-link:hover{background:#4d0f14}
 .secondary-link{margin-left:.35rem;background:transparent!important;color:#4d0f14!important}.secondary-link:hover{background:#4d0f14!important;color:#fff!important}
-
+.button.primary {
+    background: #646262 !important;
+    border-color: #232121 !important;
+}
